@@ -1,0 +1,26 @@
+<h2>Liste des Articles</h2>
+    <ul>
+        {% for article in articles %}
+            <li>{{ article.name }} - {{ article.price }} - {{ article.color }}</li>
+        {% endfor %}
+    </ul>
+
+<h2>Ajouter un nouvel article</h2>
+<form method="post" action="{% url 'add_article' %}">
+    {% csrf_token %}
+    {{ form.name.label_tag }} {{ form.name }}
+    {{ form.price.label_tag }} {{ form.price }}
+    {{ form.color.label_tag }} {{ form.color }}
+    <input type="text" name="Nom" class="square-input" maxlength="10" placeholder="Nom">
+    <input type="text" name="Prix" class="square-input" maxlength="10" placeholder="Prix">
+    <input type="text" name="Couleur" class="square-input" maxlength="10" placeholder="Couleur">
+    <button type="submit">Ajouter l'article</button>
+</form>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
