@@ -5,14 +5,6 @@ from django.contrib import messages
 from .models import Article
 from .forms import ArticleForm
 
-# Create your views here.
-def article_list(request):
-    articles = Article.objects.all()
-    template = loader.get_template('article_list.html')
-    context = {
-        'articles': articles,
-    }
-    return HttpResponse(template.render(context, request))
 
 def add_article(request):
     if request.method == 'POST':
@@ -36,7 +28,16 @@ def add_article(request):
                 messages.error(request, f'Une erreur s\'est produite lors de l\'ajout de l\'article : {e}')
         else:
             messages.error(request, 'Veuillez corriger les erreurs dans le formulaire.')
+    
     else:
         form = ArticleForm()
+    return render(request, 'article_list.html', {'form': form})
 
-    return render(request, 'add_article.html', {'form': form})
+# Create your views here.
+def article_list(request):
+    articles = Article.objects.all()
+    template = loader.get_template('article_list.html')
+    context = {
+        'articles': articles,
+    }
+    return HttpResponse(template.render(context, request))
