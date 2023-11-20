@@ -5,39 +5,20 @@ from django.contrib import messages
 from .models import Article
 from .forms import ArticleForm
 
-
-def add_article(request):
-    if request.method == 'POST':
-        form = ArticleForm(request.POST)
-        if form.is_valid():
-            # Récupérez les données des champs input supplémentaires
-            Nom = request.POST.get('Nom', 'default')
-            Prix = request.POST.get('Prix', '0')
-            Couleur = request.POST.get('Couleur', 'None')
-
-            try:
-                # Créez un nouvel article en utilisant les données du formulaire
-                new_article = form.save(commit=False)
-                new_article.name = Nom 
-                new_article.price = Prix
-                new_article.color = Couleur
-                new_article.save()
-                messages.success(request, 'L\'article a été ajouté avec succès.')
-                return redirect('article_list')
-            except Exception as e:
-                messages.error(request, f'Une erreur s\'est produite lors de l\'ajout de l\'article : {e}')
-        else:
-            messages.error(request, 'Veuillez corriger les erreurs dans le formulaire.')
-    
-    else:
-        form = ArticleForm()
-    return render(request, 'article_list.html', {'form': form})
-
-# Create your views here.
 def article_list(request):
     articles = Article.objects.all()
-    template = loader.get_template('article_list.html')
-    context = {
-        'articles': articles,
-    }
-    return HttpResponse(template.render(context, request))
+    form = ArticleForm()
+
+    if request.method == 'POST':
+        # Traitement pour ajouter un nouvel article
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('article_list')
+
+    return render(request, 'article_list.html', {'articles': articles, 'form': form})
+
+def delete_article(request, article_id):
+    article = Article.objects.get(pk=article_id)
+    article.delete()
+    return redirect('article_list')
