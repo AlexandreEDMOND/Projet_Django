@@ -6,8 +6,12 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['name', 'price', 'color']
-        widgets = {
-            'name': forms.TextInput(attrs={'value': 'Nom par défaut'}),
-            'price': forms.NumberInput(attrs={'value': 0.0}),
-            'color': forms.TextInput(attrs={'value': 'Couleur par défaut'}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Vous pouvez également définir des valeurs par défaut ici si nécessaire
+
+        # Ajoutez des placeholders pour chaque champ
+        self.fields['name'].widget.attrs['placeholder'] = 'Entrez le nom'
+        self.fields['price'].widget.attrs['placeholder'] = 'Entrez le prix'
+        self.fields['color'].widget.attrs['placeholder'] = 'Entrez la couleur'
