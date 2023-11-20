@@ -1,7 +1,4 @@
-from django.http import HttpResponse
-from django.template import loader
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from .models import Article
 from .forms import ArticleForm
 
@@ -22,3 +19,9 @@ def delete_article(request, article_id):
     article = Article.objects.get(pk=article_id)
     article.delete()
     return redirect('article_list')
+
+def delete_all_articles(request):
+    if request.method == 'POST':
+        Article.objects.all().delete()
+        return redirect('article_list')
+    return render(request, 'article_list.html')

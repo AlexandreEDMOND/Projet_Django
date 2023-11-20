@@ -1,20 +1,37 @@
 <!-- article_list.html -->
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Articles</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <h2>Liste des Articles</h2>
     <ul>
         {% for article in articles %}
-            <li>{{ article.name }} - {{ article.price }} - {{ article.color }}
-                <a href="{% url 'delete_article' article.id %}">Supprimer</a>
+            <li class="article-item">
+                <div class="article-info">
+                    {{ article.name }} - {{ article.price }} - {{ article.color }}
+                </div>
+                <div class="delete-form">
+                    <form method="post" action="{% url 'delete_article' article.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Supprimer l'article</button>
+                    </form>
+                </div>
             </li>
         {% endfor %}
     </ul>
+
+    <!-- Bouton "Supprimer tous" aligné à droite -->
+    <form method="post" action="{% url 'delete_all_articles' %}" class="delete-all-form">
+        {% csrf_token %}
+        <button type="submit" class="delete-all-button">Supprimer tous</button>
+    </form>
 
     <h2>Ajouter un nouvel article</h2>
     <form method="post" action="{% url 'article_list' %}">
