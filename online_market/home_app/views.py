@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Article
 from .forms import ArticleForm
 from django.contrib import messages
+import random
+from faker import Faker
+fake = Faker()
 
 def article_list(request):
     articles = Article.objects.all()
@@ -13,6 +16,13 @@ def article_list(request):
         if form.is_valid():
             form.save()
             return redirect('article_list')
+    
+    if request.method == 'POST' and 'generate_articles' in request.POST:
+        # Générer et sauvegarder 10 articles
+        generate_and_save_articles(10)
+
+        # Rediriger pour éviter de renvoyer le formulaire lors d'un actualisation
+        return redirect('article_list')
 
     return render(request, 'article_list.html', {'articles': articles, 'form': form})
 
@@ -64,3 +74,14 @@ def delete_all_articles(request):
         Article.objects.all().delete()
         return redirect('article_list')
     return render(request, 'article_list.html')
+
+def generate_random_article():
+    name = fake.word()
+    price = round(random.uniform(10, 100), 2)
+    color = fake.color_name()
+    return name, price, color
+
+def generate_and_save_articles(num_articles):
+    for _ in range(num_articles):
+        name, price, color = generate_random_article()
+        Article.objects.create(name=name, price=price, color=color)

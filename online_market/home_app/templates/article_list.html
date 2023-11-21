@@ -27,6 +27,11 @@
         {% endfor %}
     </ul>
 
+    <form method="post" action="{% url 'article_list' %}">
+        {% csrf_token %}
+        <button type="submit" name="generate_articles">Générer 10 articles aléatoires</button>
+    </form>
+
     <!-- Bouton "Supprimer tous" aligné à droite -->
     <form method="post" action="{% url 'delete_all_articles' %}" class="delete-all-form">
         {% csrf_token %}
