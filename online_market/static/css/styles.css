@@ -1,7 +1,7 @@
 /* static/css/styles.css */
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0; /* Supprimez la marge du corps pour utiliser toute la hauteur de la fenêtre */
 }
 
 h2 {
@@ -45,6 +45,16 @@ button:hover {
     background-color: #45a049;
 }
 
+.article-list-container {
+    overflow-y: auto;
+    max-height: 83%; /* Ajustez ceci selon vos besoins */
+}
+
+.article-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 
 .article-item {
     display: flex;
@@ -81,4 +91,25 @@ button:hover {
     border: none;
     padding: 5px 10px;
     cursor: pointer;
+}
+
+.container {
+    display: flex;
+    height: 100vh; /* Utilise toute la hauteur de la fenêtre */
+}
+
+.left-column, .right-column {
+    flex: 1;
+    padding: 20px;
+    border-radius: 15px; /* Ajoutez des bords arrondis */
+}
+
+.left-column {
+    background-color: #3498db;
+    margin: 10px;
+}
+
+.right-column {
+    background-color: #e74c3c; /* Couleur de fond rouge pour la colonne de droite */
+    margin: 10px;
 }

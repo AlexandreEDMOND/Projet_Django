@@ -10,39 +10,49 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h2>Liste des Articles</h2>
-    <ul>
-        {% for article in articles %}
-            <li class="article-item">
-                <div class="article-info">
-                    {{ article.name }} - {{ article.price }} - {{ article.color }}
-                </div>
-                <div class="delete-form">
-                    <form method="post" action="{% url 'delete_article' article.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="delete-button">Supprimer l'article</button>
-                    </form>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <!-- Partie Gauche -->
+        <div class="left-column">
+            <h2>Liste des Articles</h2>
+            <div class="article-list-container">
+                <ul class="article-list">
+                    {% for article in articles %}
+                        <li class="article-item">
+                            <div class="article-info">
+                                {{ article.name }} - {{ article.price }} - {{ article.color }}
+                            </div>
+                            <div class="delete-form">
+                                <form method="post" action="{% url 'delete_article' article.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-button">Supprimer l'article</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-    <form method="post" action="{% url 'article_list' %}">
-        {% csrf_token %}
-        <button type="submit" name="generate_articles">Générer 10 articles aléatoires</button>
-    </form>
+            <!-- Bouton "Supprimer tous" aligné à droite -->
+            <form method="post" action="{% url 'delete_all_articles' %}" class="delete-all-form">
+                {% csrf_token %}
+                <button type="submit" class="delete-all-button">Supprimer tous</button>
+            </form>
+        </div>
 
-    <!-- Bouton "Supprimer tous" aligné à droite -->
-    <form method="post" action="{% url 'delete_all_articles' %}" class="delete-all-form">
-        {% csrf_token %}
-        <button type="submit" class="delete-all-button">Supprimer tous</button>
-    </form>
+        <!-- Partie Droite -->
+        <div class="right-column">
+            <h2>Ajouter un nouvel article</h2>
+            <form method="post" action="{% url 'add_article' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Ajouter l'article</button>
+            </form>
 
-    <h2>Ajouter un nouvel article</h2>
-    <form method="post" action="{% url 'add_article' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Ajouter l'article</button>
-    </form>
+            <form method="post" action="{% url 'article_list' %}">
+                {% csrf_token %}
+                <button type="submit" name="generate_articles">Générer 10 articles aléatoires</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
