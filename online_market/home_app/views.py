@@ -18,8 +18,11 @@ def article_list(request):
             return redirect('article_list')
     
     if request.method == 'POST' and 'generate_articles' in request.POST:
+        #On récupère le nombre d'articles à créer
+        article_count = int(request.POST.get('article_count', 10)) 
+
         # Générer et sauvegarder 10 articles
-        generate_and_save_articles(10)
+        generate_and_save_articles(article_count)
 
         # Rediriger pour éviter de renvoyer le formulaire lors d'un actualisation
         return redirect('article_list')

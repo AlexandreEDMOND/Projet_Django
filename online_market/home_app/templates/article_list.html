@@ -50,7 +50,9 @@
 
             <form method="post" action="{% url 'article_list' %}">
                 {% csrf_token %}
-                <button type="submit" name="generate_articles">Générer 10 articles aléatoires</button>
+                <label for="article_count">Nombre d'articles à générer:</label>
+                <input type="number" name="article_count" id="article_count" value="10" min="1" max="100">
+                <button type="submit" name="generate_articles">Générer des articles aléatoires</button>
             </form>
         </div>
     </div>
